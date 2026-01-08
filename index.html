@@ -127,13 +127,23 @@
             color: #fff;
         }
 
-        /* Reveal Animations */
+        /* Reveal Animations - Scroll Based */
         .reveal-text {
             clip-path: inset(0 0 100% 0);
             transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
         }
         .reveal-text.visible {
             clip-path: inset(0 0 0 0);
+        }
+
+        /* Auto Reveal Animation - Load Based (For Hero) */
+        .reveal-auto {
+            animation: revealAutoAnim 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s forwards;
+            clip-path: inset(0 0 100% 0); /* Start hidden */
+        }
+        @keyframes revealAutoAnim {
+            0% { clip-path: inset(0 0 100% 0); }
+            100% { clip-path: inset(0 0 0 0); }
         }
 
         .fade-up {
@@ -440,7 +450,8 @@
 
                         <div className="relative z-10 w-full max-w-[1440px] px-6 grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
                             <div className="md:col-span-12 lg:col-span-10 lg:col-start-2">
-                                <div className="reveal-text text-center md:text-left">
+                                {/* Use auto-reveal animation here instead of scroll trigger */}
+                                <div className="reveal-auto text-center md:text-left">
                                     {/* Band removed, text size reduced */}
                                     <div className="mb-8 inline-block">
                                         <h1 className="text-3xl md:text-5xl lg:text-6xl font-luxury font-bold text-white leading-none tracking-[0.1em] drop-shadow-2xl">
@@ -471,11 +482,12 @@
                                     </div>
 
                                     <div className="flex flex-wrap gap-6 justify-center md:justify-start">
-                                        {/* NOTE Button: Transparent with Note color border */}
-                                        <a href="https://note.com/kenshiro0909" target="_blank" className="hover-target px-12 py-4 border border-brand-note text-white text-xs font-bold font-en uppercase tracking-[0.25em] hover:bg-brand-note hover:text-white transition-all duration-300 shadow-lg bg-transparent">
+                                        {/* NOTE Button: Border White */}
+                                        <a href="https://note.com/kenshiro0909" target="_blank" className="hover-target px-12 py-4 border border-white text-white text-xs font-bold font-en uppercase tracking-[0.25em] hover:bg-brand-note hover:border-brand-note hover:text-white transition-all duration-300 shadow-lg bg-transparent">
                                             NOTE
                                         </a>
-                                        <a href="https://lin.ee/Hmq3J35" target="_blank" className="hover-target px-12 py-4 border border-brand-line text-white text-xs font-bold font-en uppercase tracking-[0.25em] hover:bg-brand-line hover:text-white transition-all duration-300 shadow-lg bg-transparent">
+                                        {/* OFFICIAL LINE Button: Border White */}
+                                        <a href="https://lin.ee/Hmq3J35" target="_blank" className="hover-target px-12 py-4 border border-white text-white text-xs font-bold font-en uppercase tracking-[0.25em] hover:bg-brand-line hover:border-brand-line hover:text-white transition-all duration-300 shadow-lg bg-transparent">
                                             OFFICIAL LINE
                                         </a>
                                     </div>
