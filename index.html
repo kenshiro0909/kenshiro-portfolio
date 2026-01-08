@@ -47,6 +47,7 @@
                         'spin-slow': 'spin 12s linear infinite',
                         'shimmer': 'shimmer 2s linear infinite',
                         'fade-in-slow': 'fadeIn 2s ease-out forwards',
+                        'pan-slow': 'pan 30s ease-in-out infinite alternate',
                     },
                     keyframes: {
                         shimmer: {
@@ -56,6 +57,10 @@
                         fadeIn: {
                             '0%': { opacity: '0' },
                             '100%': { opacity: '1' },
+                        },
+                        pan: {
+                            '0%': { transform: 'scale(1.2) translateX(-3%)' },
+                            '100%': { transform: 'scale(1.2) translateX(3%)' }
                         }
                     },
                     transitionTimingFunction: {
@@ -127,23 +132,13 @@
             color: #fff;
         }
 
-        /* Reveal Animations - Scroll Based */
+        /* Reveal Animations */
         .reveal-text {
             clip-path: inset(0 0 100% 0);
             transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
         }
         .reveal-text.visible {
             clip-path: inset(0 0 0 0);
-        }
-
-        /* Auto Reveal Animation - Load Based (For Hero) */
-        .reveal-auto {
-            animation: revealAutoAnim 1.5s cubic-bezier(0.77, 0, 0.175, 1) 0.5s forwards;
-            clip-path: inset(0 0 100% 0); /* Start hidden */
-        }
-        @keyframes revealAutoAnim {
-            0% { clip-path: inset(0 0 100% 0); }
-            100% { clip-path: inset(0 0 0 0); }
         }
 
         .fade-up {
@@ -442,7 +437,8 @@
                     {/* Hero Section */}
                     <header className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
                         <div className="absolute inset-0 z-0">
-                            <div className="w-full h-full bg-cover bg-center transition-transform duration-[20s] ease-out scale-110 animate-[spin_30s_linear_infinite_reverse] md:animate-none md:scale-105" 
+                            {/* Animated Background (Pan Slow) */}
+                            <div className="w-full h-full bg-cover bg-center animate-pan-slow" 
                                  style={{backgroundImage: 'url("https://github.com/user-attachments/assets/6551bdea-2539-4288-9a2e-27543c0ebd72")'}}>
                             </div>
                             <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
@@ -452,9 +448,10 @@
                             <div className="md:col-span-12 lg:col-span-10 lg:col-start-2">
                                 {/* Use auto-reveal animation here instead of scroll trigger */}
                                 <div className="reveal-auto text-center md:text-left">
-                                    {/* Band removed, text size reduced */}
-                                    <div className="mb-8 inline-block">
-                                        <h1 className="text-3xl md:text-5xl lg:text-6xl font-luxury font-bold text-white leading-none tracking-[0.1em] drop-shadow-2xl">
+                                    {/* Band added back, font size adjusted */}
+                                    <div className="mb-8 inline-block relative">
+                                        <div className="absolute inset-0 border-y border-white/20 bg-white/5 backdrop-blur-sm -skew-x-12"></div>
+                                        <h1 className="relative z-10 text-3xl md:text-5xl lg:text-6xl font-luxury font-bold text-white leading-tight tracking-[0.15em] drop-shadow-2xl py-2 px-8">
                                             THREADS<span className="text-brand-gold mx-3 font-serif font-light">×</span>AI
                                         </h1>
                                     </div>
@@ -472,7 +469,8 @@
                                     <div className="h-[1px] w-24 bg-brand-gold mb-10 mx-auto md:mx-0"></div>
                                     
                                     <div className="mb-12">
-                                        <p className="text-white font-serif text-2xl md:text-3xl leading-relaxed tracking-widest font-light text-shadow-sm">
+                                        {/* Smaller font size for mobile, no-wrap attempt logic handled by responsive sizes */}
+                                        <p className="text-white font-serif text-sm md:text-xl lg:text-2xl leading-relaxed tracking-widest font-light text-shadow-sm whitespace-nowrap md:whitespace-normal">
                                             貴方の人生に<br/>
                                             <span className="relative inline-block mt-2">
                                                 「安心」という名の新しい柱を。
@@ -482,11 +480,11 @@
                                     </div>
 
                                     <div className="flex flex-wrap gap-6 justify-center md:justify-start">
-                                        {/* NOTE Button: Border White */}
+                                        {/* NOTE Button: Transparent with White border -> Hover Note Color */}
                                         <a href="https://note.com/kenshiro0909" target="_blank" className="hover-target px-12 py-4 border border-white text-white text-xs font-bold font-en uppercase tracking-[0.25em] hover:bg-brand-note hover:border-brand-note hover:text-white transition-all duration-300 shadow-lg bg-transparent">
                                             NOTE
                                         </a>
-                                        {/* OFFICIAL LINE Button: Border White */}
+                                        {/* OFFICIAL LINE Button: Transparent with White border -> Hover Line Color */}
                                         <a href="https://lin.ee/Hmq3J35" target="_blank" className="hover-target px-12 py-4 border border-white text-white text-xs font-bold font-en uppercase tracking-[0.25em] hover:bg-brand-line hover:border-brand-line hover:text-white transition-all duration-300 shadow-lg bg-transparent">
                                             OFFICIAL LINE
                                         </a>
@@ -505,14 +503,15 @@
                         <div className="max-w-[1200px] mx-auto">
                             <SectionHeading number="01" title="My Contents" subtitle="～私の知識と経験を凝縮した、人生を変える武器たち～" />
 
-                            <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3 md:gap-x-8 md:gap-y-16">
+                            {/* Changed to flex-col for mobile to stack vertically instead of scroll */}
+                            <div className="flex flex-col gap-12 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-x-8 md:gap-y-16">
                                 <ContentCard 
                                     number="01"
                                     title="Threads×note攻略『AITHRAISE』"
                                     desc="【購入者様：4ヶ月で50万達成】大手エンジニアとの共作。開始14日で成果報告14名以上。30個以上のGPTsが完全並走サポート"
                                     image="https://github.com/user-attachments/assets/a9a94028-2d85-4d37-9c32-e0ec2df533cf"
                                     link="https://brain-market.com/u/hokuto88/a/byIjMyIjMgoTZsNWa0JXY"
-                                
+                                    note="AITHERAISE"
                                     aspectRatio="aspect-video"
                                 />
                                 <ContentCard 
@@ -521,7 +520,7 @@
                                     desc="孤独な作業を終わらせる、熱量の高い仲間との環境。挫折させない仕組みと基準値を高め合う場所で、楽しみながら成果への最短ルートを走り抜ける。"
                                     image="https://github.com/user-attachments/assets/9268ab48-d727-4b8a-bc82-d1c89abaefa4"
                                     link="https://note.com/kenshiro0909/n/n22e97c1439c6"
-                                
+                                    note="ケンシプ"
                                     aspectRatio="aspect-video"
                                 />
                                 <ContentCard 
@@ -530,7 +529,7 @@
                                     desc="CANVA×AIでサムネを思いのままに！noteが売れないのはサムネが原因"
                                     image="https://github.com/user-attachments/assets/43b0863a-69fd-4ca4-b222-5fb650c1afcf"
                                     link="https://brain-market.com/u/hokuto88/a/b2EzN1IjMgoTZsNWa0JXY" 
-                                
+                                    note="Noteraise"
                                     aspectRatio="aspect-video"
                                   />
                             </div>
@@ -561,6 +560,7 @@
                                             desc="Threadsで成果を出している人で持っていない人はゼロ。講座級のノウハウ。"
                                             image="https://github.com/user-attachments/assets/7ece8087-937b-4f9c-bc51-e86b89544eb3"
                                             link="https://kenshiro-sidejob.site/new-threads/"
+                                            note="シンスレッズ"
                                             aspectRatio="aspect-video"
                                         />
                                     </div>
@@ -580,11 +580,14 @@
                                     <div className="img-mask-container aspect-[9/16] w-full max-w-md mx-auto z-10 relative">
                                         <div className="img-mask-overlay"></div>
                                         <img src="https://github.com/user-attachments/assets/b36ad80f-edf2-48a8-8fb7-2961dc9b5031" alt="kenshiro" className="img-mask-img object-contain" />
+                                        
+                                        {/* Kenshiro Text - Repositioned inside for mobile safety */}
+                                        <div className="absolute bottom-4 right-2 z-20 pointer-events-none">
+                                            <h3 className="text-5xl md:text-7xl lg:text-8xl font-script text-brand-gold text-glow select-none drop-shadow-xl">
+                                                Kenshiro
+                                            </h3>
+                                        </div>
                                     </div>
-                                    
-                                    <h3 className="absolute -bottom-6 -right-12 z-20 text-7xl md:text-9xl font-script text-brand-gold text-glow select-none drop-shadow-2xl whitespace-nowrap">
-                                        Kenshiro
-                                    </h3>
                                 </div>
                                 <div className="lg:col-span-6 lg:col-start-7 space-y-10 fade-up">
                                     <div className="space-y-6">
@@ -594,27 +597,27 @@
                                         </h3>
                                         <p className="font-sans text-sm leading-8 opacity-70">
                                             はじめまして、ケンシロウです。<br/>
-                                            僕の人生は、順風満帆とは程遠いものでした。店長として懸命に働いた職場からの理不尽な解雇。<br/>
-                                            失意の中、Uber Eatsでひたすらペダルを漕ぎ、日銭を稼ぐ日々。
+                                            僕の人生は、順風満帆とは程遠いものでした。店長として懸命に働いた職場からの理不尽な解雇。失意の中、Uber Eatsでひたすらペダルを漕ぎ、日銭を稼ぐ日々。
                                         </p>
                                         <p className="font-sans text-sm leading-8 opacity-70">
                                             その後、ご縁がありカフェ店長となりますが、お店は失敗。<br/>
                                             現在は<strong className="text-brand-gold">週6勤務という過酷な労働環境</strong>に身を置いています。<br/>
                                             「おじいちゃんになってもこの働き方は続けられない」<br/>
-                                            その焦りと、最愛の彼女と結婚し幸せにするという夢のため、<br/>
-                                            泥臭く副業の世界へ飛び込みました。
+                                            その焦りと、最愛の彼女と結婚し幸せにするという夢のため、泥臭く副業の世界へ飛び込みました。
                                         </p>
                                     </div>
                                     <div className="flex flex-wrap gap-4 border-t border-brand-gold/20 pt-8">
-                                        <a href="https://www.threads.net/@kenshiro_ai.fukugyo" target="_blank" className="hover-target flex items-center gap-2 px-8 py-4 bg-[#101010] border border-brand-gold/30 text-white text-xs font-bold font-en uppercase tracking-widest hover:bg-brand-gold hover:text-black transition-all duration-300 shadow-lg">
-                                            <ThreadsIcon size={18} /> Threads
+                                        {/* Threads Button */}
+                                        <a href="https://www.threads.net/@kenshiro_ai.fukugyo" target="_blank" className="hover-target flex items-center justify-center px-8 py-4 bg-transparent border border-white text-white text-xs font-bold font-en uppercase tracking-widest hover:bg-brand-gold hover:border-brand-gold hover:text-black transition-all duration-300 shadow-lg">
+                                            Threads
                                         </a>
-                                        {/* Added Note Button */}
-                                        <a href="https://note.com/kenshiro0909" target="_blank" className="hover-target flex items-center gap-2 px-8 py-4 bg-[#101010] border border-brand-note/50 text-white text-xs font-bold font-en uppercase tracking-widest hover:bg-brand-note hover:text-white transition-all duration-300 shadow-lg">
+                                        {/* Note Button */}
+                                        <a href="https://note.com/kenshiro0909" target="_blank" className="hover-target flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-white text-white text-xs font-bold font-en uppercase tracking-widest hover:bg-brand-note hover:border-brand-note hover:text-white transition-all duration-300 shadow-lg">
                                             Note
                                         </a>
-                                        <a href="https://lin.ee/Hmq3J35" target="_blank" className="hover-target flex items-center gap-2 px-8 py-4 bg-brand-line border border-transparent text-white text-xs font-bold font-en uppercase tracking-widest hover:bg-white hover:text-brand-line hover:border-brand-line transition-all duration-300 shadow-lg">
-                                            OFFICIAL LINE <ArrowRight size={14} />
+                                        {/* LINE Button */}
+                                        <a href="https://lin.ee/Hmq3J35" target="_blank" className="hover-target flex items-center gap-2 px-8 py-4 bg-transparent border border-white text-white text-xs font-bold font-en uppercase tracking-widest hover:bg-brand-line hover:border-brand-line hover:text-white transition-all duration-300 shadow-lg">
+                                            LINE <ArrowRight size={14} />
                                         </a>
                                     </div>
                                 </div>
@@ -677,7 +680,7 @@
                                 <TimelineItem 
                                     year="06" 
                                     title="１年で累計２００万以上の収益化を達成" 
-                                    desc="継続の結果、『AITHRAISE』『NOTERAISE』販売開始43日で120万達成。現在は毎月6桁を継続しながらさらなる高みへ、仲間と共に進んでいる。"
+                                    desc="継続の結果、『AITHRAISE』『NOTERAISE』のローンチで爆発的成果。販売開始43日で120万達成。現在は毎月6桁を継続しながらさらなる高みへ、仲間と共に進んでいる。"
                                     current={true}
                                 />
                              </div>
